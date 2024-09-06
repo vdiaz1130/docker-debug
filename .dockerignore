@@ -1,0 +1,33 @@
+# Ignore node_modules as they are installed in the container
+
+node_modules
+
+# Ignore dist directory (build artifacts)
+
+dist
+
+# Ignore temporary files
+
+tmp
+
+# Ignore IDE/editor config and settings files
+
+.vscode
+_.log
+_.swp
+
+# Ignore Docker-specific files that don’t need to be in the image
+
+Dockerfile
+docker-compose.yml
+
+# Ignore git repository files
+
+.git
+.gitignore
+
+# Ignore Nx cache and temporary files
+
+.nx
+.vscode
+templates

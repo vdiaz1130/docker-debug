@@ -1,0 +1,26 @@
+{
+  "name": "notifications-gateway",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/notifications-gateway/src",
+  "projectType": "application",
+  "tags": ["scope:app:notifications-gateway"],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "notifications-gateway:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "notifications-gateway:build:development"
+        },
+        "production": {
+          "buildTarget": "notifications-gateway:build:production"
+        }
+      }
+    }
+  }
+}

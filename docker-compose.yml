@@ -1,0 +1,39 @@
+services:
+  auth-gateway:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development # will only build development stage from Dockerfile
+    # depends_on:
+    #   - postgres
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+      NODE_ENV: development
+      JWT_SECRET: secret
+      PORT: 3000
+    ports:
+      - 8080:3000
+    volumes:
+      - ./apps/auth-gateway:/usr/src/app/apps/auth-gateway
+      # - ./node_modules:/usr/src/app/node_modules
+      # - ./libs:/usr/src/app/libs
+    command: pnpm nx serve auth-gateway
+
+  # postgres:
+  #   image: postgres:13
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: postgres
+  #   ports:
+  #     - 5432:5432
+
+  # postgres_admin:
+  #   image: dpage/pgadmin4:4.28
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@admin.de
+  #     PGADMIN_DEFAULT_PASSWORD: password
+  #   ports:
+  #     - 5050:80
