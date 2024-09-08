@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Auth",
+      "address": "localhost",
+      "port": 9229,
+      "remoteRoot": "/usr/src/app/apps/auth-gateway",
+      "localRoot": "${workspaceFolder}",
+      "request": "attach",
+      "type": "node"
+    },
+    {
+      "name": "Auth Gateway",
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}",
+      "port": 9229,
+      "remoteRoot": "/usr/src/app/apps/auth-gateway",
+      "request": "attach",
+      "restart": true,
+      "sourceMaps": true,
+      "type": "node"
+    },
+    {
+      "name": "Notifications Gateway",
+      "address": "0.0.0.0",
+      "localRoot": "${workspaceFolder}",
+      "port": 9230,
+      "remoteRoot": "/usr/src/app",
+      "request": "attach",
+      "restart": true,
+      "sourceMaps": true,
+      "type": "node"
+    }
+  ]
+}

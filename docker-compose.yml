@@ -3,37 +3,54 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
-      target: development # will only build development stage from Dockerfile
-    # depends_on:
-    #   - postgres
+      target: development
+      args:
+        service: auth-gateway
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
-      NODE_ENV: development
-      JWT_SECRET: secret
       PORT: 3000
     ports:
       - 8080:3000
-    volumes:
-      - ./apps/auth-gateway:/usr/src/app/apps/auth-gateway
-      # - ./node_modules:/usr/src/app/node_modules
-      # - ./libs:/usr/src/app/libs
-    command: pnpm nx serve auth-gateway
+      - 9229:9229
+    command: pnpm nx serve auth-gateway --watch
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/auth-gateway
+          target: /usr/src/app/apps/auth-gateway
+          ignore:
+            - node_modules/
+        - action: sync
+          path: ./libs
+          target: /usr/src/app/libs
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
 
-  # postgres:
-  #   image: postgres:13
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: postgres
-  #     POSTGRES_DB: postgres
-  #   ports:
-  #     - 5432:5432
-
-  # postgres_admin:
-  #   image: dpage/pgadmin4:4.28
-  #   depends_on:
-  #     - postgres
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@admin.de
-  #     PGADMIN_DEFAULT_PASSWORD: password
-  #   ports:
-  #     - 5050:80
+  notifications-gateway:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+      args:
+        service: notifications-gateway
+    environment:
+      PORT: 3000
+    ports:
+      - 8081:3000
+      - 9230:9229
+    command: pnpm nx serve notifications-gateway --watch
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/notifications-gateway
+          target: /usr/src/app/apps/notifications-gateway
+          ignore:
+            - node_modules/
+        - action: sync
+          path: ./libs
+          target: /usr/src/app/libs
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json

@@ -1,9 +1,21 @@
 const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin');
-const { join } = require('path');
+
+const path = require('path');
+const outDir = path.join(__dirname, '../../dist/apps/auth-gateway');
 
 module.exports = {
   output: {
-    path: join(__dirname, '../../dist/apps/auth-gateway'),
+    devtoolModuleFilenameTemplate(info) {
+      const { absoluteResourcePath, namespace, resourcePath } = info;
+
+      if (path.isAbsolute(absoluteResourcePath)) {
+        return path.relative(outDir, absoluteResourcePath);
+      }
+
+      // Mimic Webpack's default behavior:
+      return `webpack://${namespace}/${resourcePath}`;
+    },
+    path: outDir,
   },
   plugins: [
     new NxAppWebpackPlugin({
@@ -14,7 +26,7 @@ module.exports = {
       assets: ['./src/assets'],
       optimization: false,
       outputHashing: 'none',
-      generatePackageJson: true,
+      sourceMap: true,
     }),
   ],
 };
